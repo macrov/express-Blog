@@ -4,4 +4,13 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    header
+      h1 #{title}
+    nav
+      span
+        a(title='主页', href='/') Home <br />
+      span
+        a(title='登录', href='/login') Login <br />
+      span
+        a(title='注册', href='/reg') Register
     block content
