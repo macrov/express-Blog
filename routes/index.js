@@ -27,7 +27,6 @@ module.exports = function(app) {
     res.render('reg', { 
       title: 'Register',
       user: req.session.user,
-      posts: posts,
       success: req.flash('success'),
       error: req.flash('error')
     });
@@ -179,6 +178,49 @@ module.exports = function(app) {
         success: req.flash('success'),
         error: req.flash('erro')
       });
+    });
+  });
+
+  app.get('/edit/:name/:day/:title', checkLogin);
+  app.get('/edit/:name/:day/:title', function(req, res) {
+    var currentUser = req.session.user;
+    Post.edit(currentUser.name, req.params.day, req.params.title, function(err, post) {
+      if(err) {
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      res.render('edit', {
+        title: "Edit",
+        post: post,
+        user: req.session.user,
+        success: req.flash('success'),
+        error: req.flash('error')
+      });
+    });
+  });
+
+  app.post('/edit/:name/:day/:title', checkLogin);
+  app.post('/edit/:name/:day/:title', function(req, res) {
+    var currentUser = req.session.user;
+    Post.update(currentUser.name, req.params.day, req.params.title, req.body.post, function(err) {
+      if(err) {
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      req.flash('success', 'Update successful!');
+      res.redirect('/u' + '/' + currentUser.name + '/' + req.params.day + '/' + req.params.title);
+    });
+  });
+
+  app.get('/remove/:name/:day/:title', checkLogin);
+  app.get('/remove/:name/:day/:title', function(req, res) {
+    Post.remove(req.params.name, req.params.day, req.params.title, function(err) {
+      if(err) {
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      req.flash('success', 'Remove successful!');
+      res.redirect('/');
     });
   });
   function checkLogin(req, res, next) {

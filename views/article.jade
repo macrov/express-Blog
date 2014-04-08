@@ -1,6 +1,11 @@
 extends layout
 
 block content
+  p
+    span
+      a(class="edit", href="/edit/#{post.name}/#{post.time.day}/#{post.title}") EDIT
+    span
+      a(class="edit", href="/remove/#{post.name}/#{post.time.day}/#{post.title}") DELETE
   p(class='info')
     |Author:
     a(href="/u/#{post.name}") #{post.name}

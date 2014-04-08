@@ -73,4 +73,45 @@ Post.getOne = function(name, day, title, callback) {
     post.post = markdown.toHTML(post.post);
     callback(null, post);
   });
-}
+};
+
+Post.edit = function(name, day, title, callback) {
+  postModel.findOne({
+    "name": name,
+    "time.day": day,
+    "title": title
+  }, function(err, post) {
+    if(err) {
+      return callback(err);
+    }
+    callback(null, post);
+  });
+};
+
+Post.update = function(name, day, title, post,callback) {
+   postModel.update({
+    "name": name,
+    "time.day": day,
+    "title": title
+   }, { 
+    "post": post
+   }, function(err, post) {
+    if(err) {
+      return callback(err);
+    }
+    return callback(null, post);
+   });
+};
+
+Post.remove = function(name, day, title, callback) {
+  postModel.remove({
+    "name": name,
+    "time.day": day,
+    "title": title
+  }, function(err) {
+    if(err) {
+      return callback(err);
+    }
+    return callback(null);
+  });
+};

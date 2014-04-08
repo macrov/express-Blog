@@ -4,10 +4,10 @@ block content
   - each post in posts
     p
       h2
-        a(href='#') #{post.title}
+        a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
     p(class='info')
       |Author:
-      a(href='#') #{post.name}
+      a(href='/u/#{post.name}') #{post.name}
       |<br />
       |Date:
       a #{post.time.minute}
