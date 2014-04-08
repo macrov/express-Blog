@@ -1,9 +1,8 @@
 /* GET home page. */
 var crypto = require('crypto'),
+    fs = require('fs'),
     User = require('../models/user.js'),
     Post = require('../models/post.js');
-
-
 
 
 
@@ -116,6 +115,32 @@ module.exports = function(app) {
     req.session.user = null;
     req.flash('success', 'Logout success!');
     res.redirect('/');
+  });
+
+  app.get('/upload', checkLogin);
+  app.get('/upload', function(req, res) {
+    res.render('upload', {
+      title: 'Upload',
+      user: req.session.user,
+      success: req.flash('success'),
+      error: req.flash('error')
+    });
+  });
+
+  app.post('/upload', checkLogin);
+  app.post('/upload', function(req, res) {
+    for(var i in req.files) {
+      if(req.files[i].size == 0) {
+        fs.unlinkSync(req.files[i].path);
+        console.log('remove');
+      } else {
+        var target_path = './public/images/' + req.files[i].name;
+        fs.renameSync(req.files[i].path, target_path);
+        console.log('save');
+      }
+    }
+    req.flash('success', 'Upload success!');
+    res.redirect('/upload');
   });
 
   function checkLogin(req, res, next) {
