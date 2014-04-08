@@ -12,7 +12,12 @@ module.exports = function(app) {
     });
   });
   app.get('/reg', function(req, res) {
-    res.render('reg', { title: 'Register' });
+    res.render('reg', { 
+      title: 'Register',
+      user: req.session.user,
+      success: req.flash('success'),
+      error: req.flash('error')
+    });
   });
   app.post('/reg', function(req, res) {
     var name = req.body.name,
@@ -50,7 +55,21 @@ module.exports = function(app) {
     res.render('login', { title: 'Login' });
   });
   app.post('/login', function(req, res) {
-
+    var md5 = crypto.createHash('md5'),
+        password = md5.update(req.body.password).digest('hex');
+    User.get(req.body.name, function(err, user) {
+      if(err) {
+        req.flash('error', 'User not exist!')
+        return res.redirect('/login');
+      }
+      if(password != user.password) {
+        req.flash('error', 'Password incorrect!');
+        return res.redirect('/login');
+      }
+      req.session.user = user;
+      req.flash('success', 'Login success!');
+      res.redirect('/');
+    });
   });
   app.get('/post', function(req, res) {
     res.render('post', {title: 'Post'});
@@ -58,5 +77,8 @@ module.exports = function(app) {
   app.post('/post', function(req, res) {
   });
   app.get('/logout', function(req, res) {
+    req.session.user = null;
+    req.flash('success', 'Logout success!');
+    res.redirect('/');
   });
 };
