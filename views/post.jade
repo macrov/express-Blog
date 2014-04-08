@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  form(method='post')
+    |Title: <br />
+    input(type='text', name='title')
+    |<br />
+    |Content: <br />
+    textarea(name='post', rows='20', cols='100')
+    input(type='submit', value='post')

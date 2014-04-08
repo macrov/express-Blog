@@ -1,4 +1,15 @@
 extends layout
 
 block content
-  p Welcome to #{title}
+  - each post in posts
+    p
+      h2
+        a(href='#') #{post.title}
+    p(class='info')
+      |Author:
+      a(href='#') #{post.name}
+      |<br />
+      |Date:
+      a #{post.time.minute}
+    p
+      !{post.post}
