@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var markdown = require('markdown').markdown;
 
 var postSchema = new mongoose.Schema({
   name: String,
@@ -45,12 +46,17 @@ Post.prototype.save = function(callback) {
 };
 
 Post.get = function(name, callback) {
-  postModel.find({
-    name: name
-  }, function(err, posts) {
+  var query = {};
+  if(name) {
+    query.name = name;
+  }
+  postModel.find(query, function(err, posts) {
     if(err) {
       return callback(err);
     }
+    posts.forEach(function(post) {
+      post.post = markdown.toHTML(post.post);
+    })
     callback(null, posts);
   });
 };
