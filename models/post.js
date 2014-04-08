@@ -45,7 +45,7 @@ Post.prototype.save = function(callback) {
   });
 };
 
-Post.get = function(name, callback) {
+Post.getAll = function(name, callback) {
   var query = {};
   if(name) {
     query.name = name;
@@ -60,3 +60,17 @@ Post.get = function(name, callback) {
     callback(null, posts);
   });
 };
+
+Post.getOne = function(name, day, title, callback) {
+  postModel.findOne({
+    "name": name,
+    "time.day": day,
+    "title": title
+  }, function(err, post) {
+    if(err) { 
+      return callback(err);
+    }
+    post.post = markdown.toHTML(post.post);
+    callback(null, post);
+  });
+}

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  - each post in posts
+    p
+      h2
+        a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
+    p(class='info')
+      |Author:
+      a(href="/u/#{post.name}") #{post.name}
+      |<br />
+      |Date:
+      #{post.time.minute}
+    p
+      !{post.post}

@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  p(class='info')
+    |Author:
+    a(href="/u/#{post.name}") #{post.name}
+    |<br />
+    |Date:
+    #{post.time.minute}
+  p
+    !{post.post}
