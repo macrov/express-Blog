@@ -11,6 +11,8 @@ module.exports = function(app) {
       error: req.flash('error')
     });
   });
+
+  app.get('/reg', checkNotLogin);
   app.get('/reg', function(req, res) {
     res.render('reg', { 
       title: 'Register',
@@ -19,6 +21,8 @@ module.exports = function(app) {
       error: req.flash('error')
     });
   });
+
+  app.post('/reg', checkNotLogin);
   app.post('/reg', function(req, res) {
     var name = req.body.name,
         password = req.body.password,
@@ -51,9 +55,13 @@ module.exports = function(app) {
       })
     })
   });
+
+  app.get('/login', checkNotLogin);
   app.get('/login', function(req, res) {
     res.render('login', { title: 'Login' });
   });
+
+  app.post('/login', checkNotLogin);
   app.post('/login', function(req, res) {
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
@@ -71,14 +79,36 @@ module.exports = function(app) {
       res.redirect('/');
     });
   });
+
+  app.get('/post', checkLogin);
   app.get('/post', function(req, res) {
     res.render('post', {title: 'Post'});
   });
+
+  app.post('/post', checkLogin);
   app.post('/post', function(req, res) {
   });
+
+  app.post('/post', checkLogin);
   app.get('/logout', function(req, res) {
     req.session.user = null;
     req.flash('success', 'Logout success!');
     res.redirect('/');
   });
+
+  function checkLogin(req, res, next) {
+    if(!req.session.user) {
+      req.flash('error', 'Please Login!');
+      return res.redirect('/login');
+    }
+    next();
+  };
+
+  function checkNotLogin(req, res, next) {
+    if(req.session.user) {
+      req.flash('error', 'Already login!');
+      return res.redirect('back');
+    }
+    next();
+  }
 };
