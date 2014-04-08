@@ -5,12 +5,34 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     header
-      h1 #{title}
+      h1= title
+      - if (user)
+        p(align='right')= user.name
+        p(align='right')= user.email
     nav
-      span
-        a(title='主页', href='/') Home <br />
-      span
-        a(title='登录', href='/login') Login <br />
-      span
-        a(title='注册', href='/reg') Register
-    block content
+      - if (user)
+        span
+          a(title='Home', href='/') HOME
+        span
+          a(title='Post', href='/post') POST
+        span
+          a(title='Upload', href='/upload') UPLOAD
+        span
+          a(title='LOGOUT' href='/logout') LOGOUT
+      - else
+        span
+          a(title='Home', href='/') HOME
+        span
+          a(title='Login', href='/login') LOGIN
+        span
+          a(title='Register', href='/reg') REGISTER  
+
+    body
+      artical
+        - if (success)
+          div= success
+
+        - if (error)
+          div= error
+      block content
+      

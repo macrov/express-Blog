@@ -6,6 +6,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var MongoStore = require('connect-mongo')(express);
+var settings = require('./settings');
+var flash = require('connect-flash');
+
 var routes = require('./routes');
 var users = require('./routes/user');
 
@@ -15,11 +19,20 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(flash());
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(express.session({
+    secret: settings.cookieSecret,
+    key: settings.db,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
+    store: new MongoStore({
+        db: settings.db
+    })
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
 
