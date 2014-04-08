@@ -2,7 +2,8 @@
 var crypto = require('crypto'),
     fs = require('fs'),
     User = require('../models/user.js'),
-    Post = require('../models/post.js');
+    Post = require('../models/post.js').Post,
+    Comment = require('../models/comment.js');
 
 
 
@@ -181,6 +182,30 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/u/:name/:day/:title', function(req, res) {
+    var date = new Date(),
+        time = date.getFullYear() + "-" + (date.getMonth() +1) + "-" + date.getDate() + " " +
+               date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    var comment = { 
+        name: req.body.name,
+        email: req.body.email,
+        website: req.body.website,
+        time: time,
+        content: req.body.content
+    };
+    console.log(comment);
+    var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
+    console.log(newComment);
+    newComment.save(function(err) {
+      if(err) {
+        console.log('err');
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      req.flash('success', 'Comment successful!');
+      res.redirect('back');
+    });
+  });
   app.get('/edit/:name/:day/:title', checkLogin);
   app.get('/edit/:name/:day/:title', function(req, res) {
     var currentUser = req.session.user;

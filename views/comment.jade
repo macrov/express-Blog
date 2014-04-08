@@ -1,0 +1,32 @@
+
+
+- each comment in post.comments
+  p
+    a(href="#{comment.website}") #{comment.name}
+  span(class="info") Commented at: #{comment.time}
+  p
+    !{comment.content}
+
+form(method="post")
+  - if (user)
+    |Name:
+    input(type="text", name="name", value="#{user.name}")
+    |<br />
+    |Email:
+    input(type="text", name="email", value="#{user.email}")
+    |<br />
+    |Website:
+    input(type="text", name="website", value="/u/#{user.name}")
+    |<br />
+  - else
+    |Name:
+    input(type="text", name="name")
+    |<br />
+    |Email:
+    input(type="text", name="email")
+    |<br />
+    |Website:
+    input(type="text", name="website", value="http://")
+    |<br />
+  textarea(name="content", rows="5", cols="80")
+  input(type="submit", value="Comment")

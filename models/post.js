@@ -5,7 +5,8 @@ var postSchema = new mongoose.Schema({
   name: String,
   title: String,
   post: String,
-  time: mongoose.Schema.Types.Mixed
+  time: mongoose.Schema.Types.Mixed,
+  comments: Array
 }, {
   collection: 'posts'
 });
@@ -18,7 +19,10 @@ function Post(name, title, post) {
   this.post = post;
 }
 
-module.exports = Post;
+module.exports = { 
+  Post: Post,
+  postModel: postModel
+};
 Post.prototype.save = function(callback) {
   var date = new Date();
   var time = {
