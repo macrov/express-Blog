@@ -64,6 +64,21 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/search', function(req, res) {
+    Post.search(req.query.keyword, function(err, posts) {
+      if(err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('search', {
+        title: "SEARCH : " + req.query.keyword,
+        posts: posts,
+        user: req.session.user,
+        success: req.flash('success'),
+        error: req.flash('error')
+      });
+    });
+  });
   app.get('/reg', checkNotLogin);
   app.get('/reg', function(req, res) {
     res.render('reg', { 
@@ -204,10 +219,10 @@ module.exports = function(app) {
   app.get('/u/:name', function(req, res) {
     User.get(req.params.name, function(err, user) {
       if(err) {
-        req.flash('error', "can't find this user!");
+        req.flash('error', err);
         return res.redirect('/');
       }
-      Post.getAll(user.name, function(err, posts) {
+      Post.getAll(req.params.name, function(err, posts) {
         if(err) {
           req.flash('error', err);
           return res.redirect('/');

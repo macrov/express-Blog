@@ -205,3 +205,23 @@ Post.getTaggedPosts = function(tag, callback) {
     callback(null, posts);
   });
 };
+
+Post.search = function(keyword, callback) {
+  var pattern = new RegExp("^.*" + keyword + ".*$", "i");
+  postModel.find({
+    "title": pattern
+  }, {
+      "name": 1,
+      "time": 1,
+      "title": 1
+  }, {
+    sort: {
+      time: -1
+    }
+  }, function(err, posts) {
+    if(err) {
+      return callback(err);
+    }
+    return callback(null, posts);
+  });
+};

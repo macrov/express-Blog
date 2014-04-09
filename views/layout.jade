@@ -35,11 +35,11 @@ html
           a(title='Register', href='/reg') REGISTER  
 
     body
-      artical
-        - if (success)
-          div= success
+      - if (success)
+        div(class="flash")= success
 
-        - if (error)
-          div= error
-      block content
+      - if (error)
+        div(class="flash")= error
+      artical
+        block content
       
