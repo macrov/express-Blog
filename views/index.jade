@@ -18,4 +18,5 @@ block content
           a(class="tag", href="/tags/#{tag}") #{tag}
     p
       !{post.post}
+    p(class="info") <#{post.pv}/#{post.comments.length}>
   include ./paging.jade

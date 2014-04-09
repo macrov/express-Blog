@@ -7,7 +7,8 @@ var postSchema = new mongoose.Schema({
   post: String,
   time: mongoose.Schema.Types.Mixed,
   comments: Array,
-  tags: Array
+  tags: Array,
+  pv: 0
 }, {
   collection: 'posts'
 });
@@ -81,6 +82,17 @@ Post.getOne = function(name, day, title, callback) {
     if(err) { 
       return callback(err);
     }
+    postModel.update({
+      "name": name,
+      "time.day": day,
+      "title": title
+    }, {
+      $inc: { "pv": 1 }
+    }, function(err) {
+      if(err) {
+        return callback(err);
+      }
+    });
     post.post = markdown.toHTML(post.post);
     callback(null, post);
   });
