@@ -11,6 +11,11 @@ block content
       |<br />
       |Date:
       a #{post.time.minute}
+      |<br />
+      |Tags:
+      - each tag in post.tags
+        - if (tag)
+          a(class="tag", href="/tags/#{tag}") #{tag}
     p
       !{post.post}
   include ./paging.jade

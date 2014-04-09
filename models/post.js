@@ -6,17 +6,19 @@ var postSchema = new mongoose.Schema({
   title: String,
   post: String,
   time: mongoose.Schema.Types.Mixed,
-  comments: Array
+  comments: Array,
+  tags: Array
 }, {
   collection: 'posts'
 });
 
 var postModel = mongoose.model('Post', postSchema);
 
-function Post(name, title, post) {
+function Post(name, title, tags, post) {
   this.name = name;
   this.title = title;
   this.post = post;
+  this.tags = tags;
 }
 
 module.exports = { 
@@ -37,7 +39,8 @@ Post.prototype.save = function(callback) {
     name: this.name,
     time: time,
     title: this.title,
-    post: this.post
+    post: this.post,
+    tags: this.tags
   };
 
   var newPost = postModel(post);
@@ -160,5 +163,33 @@ Post.getPaginatedBuckets = function(name, page, pageSize, callback) {
       }
       callback(null, posts, count);
     });
+  });
+};
+
+Post.getTags = function(callback) {
+  postModel.distinct('tags', function(err, tags) {
+    if(err) {
+      return callback(err);
+    }
+    callback(null, tags);
+  });
+};
+
+Post.getTaggedPosts = function(tag, callback) {
+  postModel.find({
+    "tags": tag
+  }, {
+    "name": 1,
+    "time": 1,
+    "title": 1,
+  },{
+    sort: {
+      time: -1
+    }
+  }, function(err, posts) {
+    if(err) {
+      return callback(err);
+    }
+    callback(null, posts);
   });
 };

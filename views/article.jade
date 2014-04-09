@@ -12,6 +12,12 @@ block content
     |<br />
     |Date:
     #{post.time.minute}
+    |<br />
+    - if (post.tags)
+    |Tags
+    - each tag in post.tags
+      - if (tag)
+        a(class="tag", href="/tags/#{tag}") #{tag}
   p
     !{post.post}
 
