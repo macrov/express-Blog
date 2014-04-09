@@ -83,6 +83,23 @@ Post.getOne = function(name, day, title, callback) {
   });
 };
 
+Post.getArchive = function(callback) {
+  postModel.find(null, {
+    "name": 1,
+    "time": 1,
+    "title": 1
+  }, {
+    sort: {
+      time: -1
+    }
+  }, function(err, posts) {
+    if(err) {
+      return callback(err);
+    }
+    callback(null, posts);
+  })
+}
+
 Post.edit = function(name, day, title, callback) {
   postModel.findOne({
     "name": name,
