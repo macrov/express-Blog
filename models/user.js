@@ -39,12 +39,13 @@ User.prototype.save = function(callback) {
 };
 
 User.get = function(name, callback) {
-  userModel
-  .findOne({
+  userModel.findOne({
     name: name
   }, function(err, user) {
     if(err) {
       return callback(err);
+    } else if (user == null) {
+      return callback('User not find!');
     }
     return callback(null, user);
   });
