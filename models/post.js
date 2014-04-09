@@ -54,7 +54,11 @@ Post.getAll = function(name, callback) {
   if(name) {
     query.name = name;
   }
-  postModel.find(query, function(err, posts) {
+  postModel.find(query, null, {
+    sort: {
+      time: -1
+    }
+  }, function(err, posts) {
     if(err) {
       return callback(err);
     }
@@ -129,7 +133,10 @@ Post.getPaginatedBuckets = function(name, page, pageSize, callback) {
    function(err, count) {
     postModel.find(query, null, {
       skip: (page -1) * pageSize,
-      limit: pageSize
+      limit: pageSize,
+      sort: {
+        time: -1
+      }
     }, function(err, posts) {
       if(err) {
         return callback(err);
