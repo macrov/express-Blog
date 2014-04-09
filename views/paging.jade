@@ -1,0 +1,8 @@
+
+div
+  - if (!isFirstPage)
+    span(class="prepage")
+      a(title="LastPage", href="?page=#{page - 1}") LastPage
+  - if (!isLastPage)
+    span(class="nextpage")
+      a(title="NextPage", href="?page=#{page + 1}") NextPage

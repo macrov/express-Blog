@@ -119,3 +119,22 @@ Post.remove = function(name, day, title, callback) {
     return callback(null);
   });
 };
+
+Post.getPaginatedBuckets = function(name, page, pageSize, callback) {
+  var query = {};
+  if(name) {
+    query.name = name;
+  }
+  postModel.count(query,
+   function(err, count) {
+    postModel.find(query, null, {
+      skip: (page -1) * pageSize,
+      limit: pageSize
+    }, function(err, posts) {
+      if(err) {
+        return callback(err);
+      }
+      callback(null, posts, count);
+    });
+  });
+};

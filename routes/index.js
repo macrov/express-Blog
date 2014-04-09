@@ -9,14 +9,23 @@ var crypto = require('crypto'),
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    Post.getAll(null, function(err, posts) {
+    var page = req.query.page ? parseInt(req.query.page) : 1,
+        pageSize = req.query.pagesize ? parseInt(req.query.pagesize) : 10;
+    console.log(req.query.page + ':' + req.query.pagesize);    
+    console.log('page:' + page);
+    console.log('pagesize' + pageSize);  
+    Post.getPaginatedBuckets(null, page, pageSize, function(err, posts, count) {
       if(err) {
         posts = [];
       }
+      console.log("count:" + count);
       res.render('index', { 
         title: 'Home',
         user: req.session.user,
         posts: posts,
+        page: page,
+        isFirstPage: (page -1) == 0,
+        isLastPage: ((page -1) * pageSize + posts.length) == count,
         success: req.flash('success'),
         error: req.flash('error')
       });
