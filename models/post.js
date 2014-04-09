@@ -65,6 +65,8 @@ Post.getAll = function(name, callback) {
   }, function(err, posts) {
     if(err) {
       return callback(err);
+    } else if (!posts) {
+      return callback("Can't find posts!");
     }
     posts.forEach(function(post) {
       post.post = markdown.toHTML(post.post);
@@ -81,6 +83,8 @@ Post.getOne = function(name, day, title, callback) {
   }, function(err, post) {
     if(err) { 
       return callback(err);
+    } else if (!post) {
+      return callback("Can't find post!");
     }
     postModel.update({
       "name": name,
@@ -91,6 +95,8 @@ Post.getOne = function(name, day, title, callback) {
     }, function(err) {
       if(err) {
         return callback(err);
+      } else if(true) {
+        return callback("can't find post!");
       }
     });
     post.post = markdown.toHTML(post.post);
@@ -110,6 +116,8 @@ Post.getArchive = function(callback) {
   }, function(err, posts) {
     if(err) {
       return callback(err);
+    } else if(!posts) {
+      return callback("Can't find posts!");
     }
     callback(null, posts);
   })
@@ -123,6 +131,8 @@ Post.edit = function(name, day, title, callback) {
   }, function(err, post) {
     if(err) {
       return callback(err);
+    } else if(!post) {
+      return callback("Can't find post!"); 
     }
     callback(null, post);
   });
@@ -172,6 +182,8 @@ Post.getPaginatedBuckets = function(name, page, pageSize, callback) {
     }, function(err, posts) {
       if(err) {
         return callback(err);
+      } else if (!posts) {
+        return callback("Can't find post!");
       }
       callback(null, posts, count);
     });
@@ -182,6 +194,8 @@ Post.getTags = function(callback) {
   postModel.distinct('tags', function(err, tags) {
     if(err) {
       return callback(err);
+    } else if(!tags) {
+      return callback("Can't find tags!");
     }
     callback(null, tags);
   });
@@ -201,6 +215,8 @@ Post.getTaggedPosts = function(tag, callback) {
   }, function(err, posts) {
     if(err) {
       return callback(err);
+    } else if(!posts) {
+      return callback("Can't find posts!");
     }
     callback(null, posts);
   });
@@ -221,6 +237,8 @@ Post.search = function(keyword, callback) {
   }, function(err, posts) {
     if(err) {
       return callback(err);
+    } else if(!posts) {
+      return callback("Can't find posts!");
     }
     return callback(null, posts);
   });
