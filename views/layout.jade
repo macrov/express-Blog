@@ -12,6 +12,9 @@ html
     nav
       - if (user)
         span
+          form(action="/search", method="get") 
+            input(type="text", name="keyword", placeholder="SEARCH", class="search")
+        span
           a(title='Home', href='/') HOME
         span
           a(title="Archive", href='/archive') ARCHIVE
