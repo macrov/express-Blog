@@ -227,8 +227,10 @@ module.exports = function(app) {
           req.flash('error', err);
           return res.redirect('/');
         }
+        console.log(user.email_MD5);
         res.render('user', {
           title: user.name,
+          email_MD5: user.email_MD5,
           posts: posts,
           user: req.session.user,
           success: req.flash('success'),
@@ -320,6 +322,11 @@ module.exports = function(app) {
       res.redirect('/');
     });
   });
+
+  app.use(function(req, res) {
+    res.render("404");
+  });
+  
   function checkLogin(req, res, next) {
     if(!req.session.user) {
       req.flash('error', 'Please Login!');
@@ -334,5 +341,5 @@ module.exports = function(app) {
       return res.redirect('back');
     }
     next();
-  }
+  };
 };

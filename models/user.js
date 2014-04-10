@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var crypto = require('crypto');
 
 mongoose.connect('mongodb://localhost/blog');
 
@@ -47,6 +48,7 @@ User.get = function(name, callback) {
     } else if (user == null) {
       return callback('User not find!');
     }
+    user.email_MD5 = crypto.createHash('md5').update(user.email).digest('hex').toString();
     return callback(null, user);
   });
 };

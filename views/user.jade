@@ -8,6 +8,7 @@ block content
     p(class='info')
       |Author:
       a(href="/u/#{post.name}") #{post.name}
+      img(src="http://www.gravatar.com/avatar/#{email_MD5}?s=48")
       |<br />
       |Date:
       #{post.time.minute}
