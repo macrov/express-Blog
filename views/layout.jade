@@ -20,24 +20,24 @@ html
               li
                 form(action="/search", method="get") 
                   input(type="text", name="keyword", placeholder="SEARCH", class="search")
-              li
+              li(class=(title === 'Home' ? 'active' : ''))
                 a(title='Home', href='/') HOME
-              li
+              li(class=(title === 'Archive' ? 'active' : ''))
                 a(title="Archive", href='/archive') ARCHIVE
-              li
+              li(class=(title === 'Tags' ? 'active' : ''))
                 a(title="Tags", href="/tags") TAGS
-              li
+              li(class=(title === 'Post' ? 'active' : ''))
                 a(title='Post', href='/post') POST
-              li
+              li(class=(title === 'Upload' ? 'active' : ''))
                 a(title='Upload', href='/upload') UPLOAD
               li
                 a(title='LOGOUT' href='/logout') LOGOUT
             - else
-              li
+              li(class=(title === 'Home' ? 'active' : ''))
                 a(title='Home', href='/') HOME
-              li
+              li(class=(title === 'Login' ? 'active' : ''))
                 a(title='Login', href='/login') LOGIN
-              li
+              li(class=(title === 'Register' ? 'active' : ''))
                 a(title='Register', href='/reg') REGISTER  
         dvi(class="col-md-1")
         div(class="col-md-6")
