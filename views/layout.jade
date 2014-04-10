@@ -3,43 +3,50 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", rel="stylesheet")
+    script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
   body
-    header
-      h1= title
-      - if (user)
-        p(align='right')= user.name
-        p(align='right')= user.email
-    nav
-      - if (user)
-        span
-          form(action="/search", method="get") 
-            input(type="text", name="keyword", placeholder="SEARCH", class="search")
-        span
-          a(title='Home', href='/') HOME
-        span
-          a(title="Archive", href='/archive') ARCHIVE
-        span
-          a(title="Tags", href="/tags") TAGS
-        span
-          a(title='Post', href='/post') POST
-        span
-          a(title='Upload', href='/upload') UPLOAD
-        span
-          a(title='LOGOUT' href='/logout') LOGOUT
-      - else
-        span
-          a(title='Home', href='/') HOME
-        span
-          a(title='Login', href='/login') LOGIN
-        span
-          a(title='Register', href='/reg') REGISTER  
+    div(class="container")
+      header
+        h1= title
+        - if (user)
+          p(align='right')= user.name
+          p(align='right')= user.email
+    div(class="container")
+      div(class="row")
+        div(class="col-md-2")
+          ul(class="nav nav-pills nav-stacked")
+            - if (user)
+              li
+                form(action="/search", method="get") 
+                  input(type="text", name="keyword", placeholder="SEARCH", class="search")
+              li
+                a(title='Home', href='/') HOME
+              li
+                a(title="Archive", href='/archive') ARCHIVE
+              li
+                a(title="Tags", href="/tags") TAGS
+              li
+                a(title='Post', href='/post') POST
+              li
+                a(title='Upload', href='/upload') UPLOAD
+              li
+                a(title='LOGOUT' href='/logout') LOGOUT
+            - else
+              li
+                a(title='Home', href='/') HOME
+              li
+                a(title='Login', href='/login') LOGIN
+              li
+                a(title='Register', href='/reg') REGISTER  
+        dvi(class="col-md-1")
+        div(class="col-md-6")
+          body
+            - if (success)
+              div(class="flash")= success
 
-    body
-      - if (success)
-        div(class="flash")= success
-
-      - if (error)
-        div(class="flash")= error
-      artical
-        block content
-      
+            - if (error)
+              div(class="flash")= error
+            artical
+              block content
+        
