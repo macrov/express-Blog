@@ -149,7 +149,12 @@ module.exports = function(app) {
 
   app.get('/post', checkLogin);
   app.get('/post', function(req, res) {
-    res.render('post', {title: 'Post'});
+    res.render('post', {
+      title: 'Post',
+      user: req.session.user,
+      success: req.flash('success'),
+      error: req.flash('error')
+      });
   });
 
   app.post('/post', checkLogin);
